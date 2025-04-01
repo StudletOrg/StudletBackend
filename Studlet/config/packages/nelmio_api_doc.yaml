@@ -1,0 +1,22 @@
+# config/packages/nelmio_api_doc.yaml
+nelmio_api_doc:
+    documentation:
+        info:
+            title: "API Documentation"
+            description: "Dokumentacja API z możliwością testowania"
+            version: "1.0.0"
+    areas:
+        default:
+            path_patterns:
+                - ^/api
+    html_config:
+        swagger_ui_config:
+            # Ustawienia Swagger UI
+            display_operation_id: true
+            display_request_duration: true
+            deepLinking: true
+            filter: true
+            defaultModelsExpandDepth: -1
+            defaultModelExpandDepth: 2
+            defaultModelRendering: model
+            showExtensions: true
