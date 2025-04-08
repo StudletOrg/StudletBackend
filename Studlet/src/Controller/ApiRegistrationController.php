@@ -40,6 +40,9 @@ class ApiRegistrationController extends AbstractController
         $user = new User();
         $user->setEmail($data['email']);
         $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT)); // Haszowanie hasła
+        $user->setFirstName($data['firstName']);
+        $user->setLastName($data['lastName']);
+        $user->setDateOfBirth(new \DateTime());
         $logger->info('Creating a new user', [
             'email' => $data['email']
         ]);
