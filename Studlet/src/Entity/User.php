@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,6 +33,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateOfBirth = null;
+
+    /**
+     * @var Collection<int, SubjectOfInstance>
+     */
+    #[ORM\OneToMany(targetEntity: SubjectOfInstance::class, mappedBy: 'Coordinator')]
+    private Collection $subjectOfInstances;
+
+    /**
+     * @var Collection<int, Group>
+     */
+    #[ORM\OneToMany(targetEntity: Group::class, mappedBy: 'professor')]
+    private Collection $groupsOfProfessor;
+
+    /**
+     * @var Collection<int, Group>
+     */
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'students')]
+    private Collection $groupsOfStudents;
+
+    /**
+     * @var Collection<int, Grade>
+     */
+    #[ORM\OneToMany(targetEntity: Grade::class, mappedBy: 'student', orphanRemoval: true)]
+    private Collection $grades;
+
+    public function __construct()
+    {
+        $this->subjectOfInstances = new ArrayCollection();
+        $this->groupsOfProfessor = new ArrayCollection();
+        $this->groupsOfStudents = new ArrayCollection();
+        $this->grades = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,5 +142,122 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    /**
+     * @return Collection<int, SubjectOfInstance>
+     */
+    public function getSubjectOfInstances(): Collection
+    {
+        return $this->subjectOfInstances;
+    }
+
+    public function addSubjectOfInstance(SubjectOfInstance $subjectOfInstance): static
+    {
+        if (!$this->subjectOfInstances->contains($subjectOfInstance)) {
+            $this->subjectOfInstances->add($subjectOfInstance);
+            $subjectOfInstance->setCoordinator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubjectOfInstance(SubjectOfInstance $subjectOfInstance): static
+    {
+        if ($this->subjectOfInstances->removeElement($subjectOfInstance)) {
+            // set the owning side to null (unless already changed)
+            if ($subjectOfInstance->getCoordinator() === $this) {
+                $subjectOfInstance->setCoordinator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroupsOfProfessor(): Collection
+    {
+        return $this->groupsOfProfessor;
+    }
+
+    public function addGroupsOfProfessor(Group $groupsOfProfessor): static
+    {
+        if (!$this->groupsOfProfessor->contains($groupsOfProfessor)) {
+            $this->groupsOfProfessor->add($groupsOfProfessor);
+            $groupsOfProfessor->setProfessor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupsOfProfessor(Group $groupsOfProfessor): static
+    {
+        if ($this->groupsOfProfessor->removeElement($groupsOfProfessor)) {
+            // set the owning side to null (unless already changed)
+            if ($groupsOfProfessor->getProfessor() === $this) {
+                $groupsOfProfessor->setProfessor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroupsOfStudents(): Collection
+    {
+        return $this->groupsOfStudents;
+    }
+
+    public function addGroupsOfStudent(Group $groupsOfStudent): static
+    {
+        if (!$this->groupsOfStudents->contains($groupsOfStudent)) {
+            $this->groupsOfStudents->add($groupsOfStudent);
+            $groupsOfStudent->addStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupsOfStudent(Group $groupsOfStudent): static
+    {
+        if ($this->groupsOfStudents->removeElement($groupsOfStudent)) {
+            $groupsOfStudent->removeStudent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Grade>
+     */
+    public function getGrades(): Collection
+    {
+        return $this->grades;
+    }
+
+    public function addGrade(Grade $grade): static
+    {
+        if (!$this->grades->contains($grade)) {
+            $this->grades->add($grade);
+            $grade->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGrade(Grade $grade): static
+    {
+        if ($this->grades->removeElement($grade)) {
+            // set the owning side to null (unless already changed)
+            if ($grade->getStudent() === $this) {
+                $grade->setStudent(null);
+            }
+        }
+
+        return $this;
     }
 }
