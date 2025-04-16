@@ -35,6 +35,10 @@ class Group
     #[ORM\OneToMany(targetEntity: Grade::class, mappedBy: 'groupp', orphanRemoval: true)]
     private Collection $grades;
 
+    #[ORM\ManyToOne(inversedBy: 'groupss')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SubjectOfInstance $subjectOfIntance = null;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -115,11 +119,22 @@ class Group
     public function removeGrade(Grade $grade): static
     {
         if ($this->grades->removeElement($grade)) {
-            // set the owning side to null (unless already changed)
             if ($grade->getGroupp() === $this) {
                 $grade->setGroupp(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSubjectOfIntance(): ?SubjectOfInstance
+    {
+        return $this->subjectOfIntance;
+    }
+
+    public function setSubjectOfIntance(?SubjectOfInstance $subjectOfIntance): static
+    {
+        $this->subjectOfIntance = $subjectOfIntance;
 
         return $this;
     }
