@@ -2,6 +2,7 @@
 namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\GradeRepository;
@@ -10,6 +11,7 @@ use App\Repository\GroupRepository;
 use App\Entity\User;
 use App\Entity\Grade;
 use App\Entity\Group;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 final class ApiGradeController extends AbstractController
@@ -106,4 +108,54 @@ final class ApiGradeController extends AbstractController
 
         return $this->json($data);
     }
+
+    #[Route('/api/grades/add', name: 'api_grade_add', methods: ['POST'])]
+    public function addGrade(Request $request, EntityManagerInterface $em, UserRepository $userRepo, GroupRepository $groupRepo): JsonResponse {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw new AccessDeniedHttpException('Brak dostępu – użytkownik niezalogowany.');
+        }
+
+        $data = json_decode($request->getContent(), true);
+        if (!isset($data['studentId'], $data['groupId'], $data['value'])) {
+            return $this->json(['error' => 'Brakuje wymaganych danych.'], 400);
+        }
+
+        $group = $groupRepo->find($data['groupId']);
+        if (!$group) {
+            return $this->json(['error' => 'Grupa nie istnieje.'], 404);
+        }
+
+        // Sprawdzenie, czy użytkownik to profesor tej grupy
+        if ($group->getProfessor()?->getId() !== $user->getId()) {
+            throw new AccessDeniedHttpException('Nie jesteś profesorem tej grupy.');
+        }
+
+        $student = $userRepo->find($data['studentId']);
+        if (!$student) {
+            return $this->json(['error' => 'Student nie istnieje.'], 404);
+        }
+
+        // Opcjonalnie: sprawdź, czy student należy do tej grupy
+        if (!$group->getStudents()->contains($student)) {
+            return $this->json(['error' => 'Student nie należy do tej grupy.'], 400);
+        }
+
+        $grade = new Grade();
+        $grade->setValue($data['value']);
+        $grade->setStudent($student);
+        $grade->setGroupp($group);
+        $grade->setDateOfCreation(new \DateTimeImmutable());
+
+        $em->persist($grade);
+        $em->flush();
+
+        return $this->json([
+            'success' => true,
+            'gradeId' => $grade->getId(),
+            'message' => 'Ocena została dodana pomyślnie.'
+        ], 201);
+    }
+
 }
