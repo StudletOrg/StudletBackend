@@ -10,6 +10,7 @@ use App\Repository\GroupRepository;
 use App\Entity\User;
 use App\Entity\Grade;
 use App\Entity\Group;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 final class ApiGradeController extends AbstractController
 {
@@ -33,6 +34,49 @@ final class ApiGradeController extends AbstractController
             ];
         }
         return $this->json($data);
+    }
+
+    #[Route('/api/student/mygrades', name: 'api_student_my_grades', methods: ['GET'])]
+    public function getMyGrades(GradeRepository $gradeRepository, UserRepository $userRepository): JsonResponse {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw new AccessDeniedHttpException('Brak dostępu – użytkownik niezalogowany.');
+        }
+
+        $grades = $gradeRepository->findBy(
+            ['student' => $user],
+            ['dateOfCreation' => 'DESC'],
+            5
+        );
+
+        $data = [];
+
+        foreach ($grades as $grade) {
+            $data[] = [
+                'id' => $grade->getId(),
+                'grade' => $grade->getValue(),
+                'subject' => $grade->getGroupp()->getSubjectOfIntance()->getSubject()->getName(),
+            ];
+        }
+
+        return $this->json($data);
+    }
+
+    #[Route('/api/student/mysubjects', name: 'api_student_my_subjects', methods: ['GET'])]
+    public function getMySubjects(GradeRepository $gradeRepository, UserRepository $userRepository): JsonResponse {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw new AccessDeniedHttpException('Brak dostępu – użytkownik niezalogowany.');
+        }
+
+        $subjects = [];
+        foreach ($user->getGroupsOfStudents() as $group) {
+            $subjects[] = $group->getSubjectOfIntance()->getSubject()->getName();
+        }
+
+        return $this->json($subjects);
     }
 
     #[Route('/student/{id}/subject/{subject_id}/grades', name: 'api_student_subject_grades', methods: ['GET'])]
