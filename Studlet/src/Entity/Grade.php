@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GradeRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GradeRepository::class)]
@@ -23,6 +24,9 @@ class Grade
     #[ORM\ManyToOne(inversedBy: 'grades')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Group $groupp = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateOfCreation = null;
 
     public function getId(): ?int
     {
@@ -61,6 +65,18 @@ class Grade
     public function setGroupp(?Group $groupp): static
     {
         $this->groupp = $groupp;
+
+        return $this;
+    }
+
+    public function getDateOfCreation(): ?\DateTimeInterface
+    {
+        return $this->dateOfCreation;
+    }
+
+    public function setDateOfCreation(?\DateTimeInterface $dateOfCreation): static
+    {
+        $this->dateOfCreation = $dateOfCreation;
 
         return $this;
     }
