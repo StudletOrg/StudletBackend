@@ -58,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Grade::class, mappedBy: 'student', orphanRemoval: true)]
     private Collection $grades;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $roles = null;
+
     public function __construct()
     {
         $this->subjectOfInstances = new ArrayCollection();
@@ -132,8 +135,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        $roles = $this->roles ?? [];
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+        return $roles;
     }
+    
 
     public function eraseCredentials(): void
     {
@@ -257,6 +265,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $grade->setStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setRoles(?array $roles): static
+    {
+        $this->roles = $roles;
 
         return $this;
     }
