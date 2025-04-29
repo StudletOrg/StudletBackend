@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 final class ApiGroupController extends AbstractController{
-    #[Route('/groups/{id}/students', name: 'group_students', methods: ['GET'])]
+    #[Route('/api/groups/{id}/students', name: 'group_students', methods: ['GET'])]
     public function getGroupStudents(int $id, GroupRepository $groupRepository): JsonResponse
     {
         $group = $groupRepository->find($id);
@@ -36,7 +36,7 @@ final class ApiGroupController extends AbstractController{
         return $this->json($students);
     }
 
-    #[Route('/groups/{id}', name: 'group_details', methods: ['GET'])]
+    #[Route('/api/groups/{id}', name: 'group_details', methods: ['GET'])]
     public function getGroupDetails(int $id, GroupRepository $groupRepository): JsonResponse
     {
         $group = $groupRepository->find($id);

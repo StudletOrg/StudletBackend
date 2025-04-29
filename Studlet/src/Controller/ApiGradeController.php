@@ -75,10 +75,14 @@ final class ApiGradeController extends AbstractController
 
         $subjects = [];
         foreach ($user->getGroupsOfStudents() as $group) {
-            $subjects[] = $group->getSubjectOfIntance()->getSubject()->getName();
+            $subject = $group->getSubjectOfIntance()->getSubject();
+            $subjects[$subject->getId()] = [
+                'id' => $subject->getId(),
+                'nazwa' => $subject->getName(),
+            ];
         }
 
-        return $this->json($subjects);
+        return $this->json(array_values($subjects));
     }
 
     #[Route('/student/{id}/subject/{subject_id}/grades', name: 'api_student_subject_grades', methods: ['GET'])]
