@@ -61,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $roles = null;
 
+    #[ORM\OneToOne(mappedBy: 'rector', cascade: ['persist', 'remove'])]
+    private ?University $universityRector = null;
+
     public function __construct()
     {
         $this->subjectOfInstances = new ArrayCollection();
@@ -272,6 +275,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(?array $roles): static
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getUniversityRector(): ?University
+    {
+        return $this->universityRector;
+    }
+
+    public function setUniversityRector(?University $universityRector): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($universityRector === null && $this->universityRector !== null) {
+            $this->universityRector->setRector(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($universityRector !== null && $universityRector->getRector() !== $this) {
+            $universityRector->setRector($this);
+        }
+
+        $this->universityRector = $universityRector;
 
         return $this;
     }

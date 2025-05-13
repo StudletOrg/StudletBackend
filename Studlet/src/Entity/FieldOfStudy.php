@@ -91,4 +91,5 @@ class FieldOfStudy
 
         return $this;
     }
+    
 }

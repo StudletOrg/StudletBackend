@@ -27,6 +27,9 @@ class University
     #[ORM\OneToMany(targetEntity: FieldOfStudy::class, mappedBy: 'university', orphanRemoval: true)]
     private Collection $fieldOfStudies;
 
+    #[ORM\OneToOne(inversedBy: 'universityRector', cascade: ['persist', 'remove'])]
+    private ?User $rector = null;
+
     public function __construct()
     {
         $this->fieldOfStudies = new ArrayCollection();
@@ -87,6 +90,18 @@ class University
                 $fieldOfStudy->setUniversity(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRector(): ?User
+    {
+        return $this->rector;
+    }
+
+    public function setRector(?User $rector): static
+    {
+        $this->rector = $rector;
 
         return $this;
     }
