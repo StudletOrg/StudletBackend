@@ -13,10 +13,12 @@ use App\Entity\Grade;
 use App\Entity\Group;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 final class ApiGradeController extends AbstractController
 {
-    #[Route('/student/{id}/allgrades', name: 'api_student_all_grades', methods: ['GET'])]
+    #[Route('/api/student/{id}/allgrades', name: 'api_student_all_grades', methods: ['GET'])]
     public function getGradesByStudent(int $id, GradeRepository $gradeRepository, UserRepository $userRepository): JsonResponse
     {
         $student = $userRepository->findBy(['id' => $id]);
@@ -85,10 +87,16 @@ final class ApiGradeController extends AbstractController
         return $this->json(array_values($subjects));
     }
 
-    #[Route('/student/{id}/subject/{subject_id}/grades', name: 'api_student_subject_grades', methods: ['GET'])]
+    #[Route('/api/student/{id}/subject/{subject_id}/grades', name: 'api_student_subject_grades', methods: ['GET'])]
     public function getGradesByStudentAndSubject(int $id, int $subject_id, GradeRepository $gradeRepository, UserRepository $userRepository, GroupRepository $groupRepository): JsonResponse
     {
-        $student = $userRepository->findBy(['id' => $id]);
+        $student;
+        if($id == -1){
+            $student = $this->getUser();
+        }
+        else{
+            $student = $userRepository->findBy(['id' => $id]);
+        }
         if (!$student) {
             throw new NotFoundHttpException('Student not found.');
         }
@@ -98,7 +106,7 @@ final class ApiGradeController extends AbstractController
             throw new NotFoundHttpException('Subject not found.');
         }
 
-        $grades = $gradeRepository->findBy(['student' => $id, 'groupp' => $subject_id]);
+        $grades = $gradeRepository->findBy(['student' => $student->getId(), 'groupp' => $subject_id]);
 
         $data = [];
 

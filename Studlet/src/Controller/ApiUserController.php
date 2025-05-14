@@ -67,21 +67,20 @@ final class ApiUserController extends AbstractController
         return $this->json($data);
     }
 
-        #[Route('/api/user/current_user', name: 'api_current_user', methods: ['GET'])]
-        public function getMyGrades(UserRepository $userRepository): JsonResponse {
+    #[Route('/api/user/current_user', name: 'api_current_user', methods: ['GET'])]
+    public function getMyGrades(UserRepository $userRepository): JsonResponse {
         $user = $this->getUser();
 
         if (!$user) {
-            throw new AccessDeniedHttpException('Brak dostępu – użytkownik niezalogowany.');
+            throw new AccessDeniedHttpException('Brak dostępu - użytkownik niezalogowany.');
         }
 
         $info = $userRepository->findBy(
             ['id' => $user]
         );
 
-        $data = [];
 
-        $data[] = [
+        $data = [
             'id' => $user->getId(),
             'firstname' => $user->getFirstName(),
             'lastname' => $user->getLastName(),
