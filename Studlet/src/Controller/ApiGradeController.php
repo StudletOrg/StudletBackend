@@ -34,7 +34,7 @@ final class ApiGradeController extends AbstractController
             $data[] = [
                 'id' => $grade->getId(),
                 'value' => $grade->getValue(),
-                'group' => $grade->getGroupp()->getId(),
+                'group' => $grade->getGroupp()->getSubjectOfIntance()->getSubject()->getName()." - grupa ".$grade->getGroupp()->getId(),
             ];
         }
         return $this->json($data);
