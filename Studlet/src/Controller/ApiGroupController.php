@@ -179,6 +179,35 @@ final class ApiGroupController extends AbstractController{
         ]);
     }
 
+    #[Route('/api/groups/student-groups', name: 'student_groups_api', methods: ['GET'])]
+    public function getStudentGroupsApi(): JsonResponse
+    {
+        $user = $this->getUser();
 
+        if (!$user) {
+            return $this->json(['error' => 'Unauthorized'], 401);
+        }
 
+        $groups = $user->getGroupsOfStudents();
+
+        $result = [];
+
+        foreach ($groups as $group) {
+            $subjectInstance = $group->getSubjectOfIntance();
+            $subjectName = $subjectInstance?->getSubject()?->getName();
+            $professor = $group->getProfessor();
+
+            $result[] = [
+                'groupNumber' => $group->getNumer(),
+                'professor' => [
+                    'firstName' => $professor?->getFirstName(),
+                    'lastName' => $professor?->getLastName(),
+                    'email' => $professor?->getEmail(),
+                ],
+                'studentCount' => $group->getStudents()->count(),
+                'subject' => $subjectName ?? 'Brak powiązanego przedmiotu',
+            ];
+        }
+        return $this->json($result);
+    }
 }
