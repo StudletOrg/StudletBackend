@@ -83,6 +83,21 @@ final class ApiGroupController extends AbstractController{
         $subjectInstance = $group->getSubjectOfIntance();
         $subjectName = $subjectInstance?->getSubject()?->getName();
 
+        $notes = [];
+        foreach ($group->getNotes() as $note) {
+            $notes[] = [
+                'id' => $note->getId(),
+                'title' => $note->getTitle(),
+                'creationDate' => $note->getCreationDate()->format('Y-m-d H:i:s'),
+                'author' => [
+                    'id' => $note->getAuthor()->getId(),
+                    'firstName' => $note->getAuthor()->getFirstName(),
+                    'lastName' => $note->getAuthor()->getLastName(),
+                ],
+                'content' => $note->getContent(),
+            ];
+        }
+
         return $this->json([
             'groupId' => $group->getId(),
             'groupNumber' => $group->getNumer(),
@@ -93,6 +108,7 @@ final class ApiGroupController extends AbstractController{
             ],
             'studentCount' => $studentCount,
             'subject' => $subjectName ?? 'Brak powiązanego przedmiotu',
+            'notes' => $notes,
         ]);
     }
 
@@ -211,4 +227,37 @@ final class ApiGroupController extends AbstractController{
         ]);
     }
 
+    #[Route('/api/notes/new', name: 'create_note', methods: ['POST'])]
+    public function createNote(Request $request, GroupRepository $groupRepository, EntityManagerInterface $entityManager, Security $security): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['title'], $data['groupId'])) {
+            return $this->json(['error' => 'Missing required fields'], 400);
+        }
+
+        $user = $security->getUser();
+        if (!$user) {
+            return $this->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $group = $groupRepository->find($data['groupId']);
+        if (!$group) {
+            return $this->json(['error' => 'Group not found'], 404);
+        }
+
+        $note = new Note();
+        $note->setTitle($data['title']);
+        $note->setContent($data['content'] ?? null);
+        $note->setCreationDate(new \DateTime());
+        $note->setAuthor($user);
+        $note->setRelatedGroup($group);
+
+        $entityManager->persist($note);
+        $entityManager->flush();
+
+        return $this->json([
+            'message' => 'Note created successfully',
+            'noteId' => $note->getId(),
+        ], 201);
+    }
 }

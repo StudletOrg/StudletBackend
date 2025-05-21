@@ -39,10 +39,17 @@ class Group
     #[ORM\JoinColumn(nullable: false)]
     private ?SubjectOfInstance $subjectOfIntance = null;
 
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'relatedGroup', orphanRemoval: true)]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
         $this->grades = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,6 +142,36 @@ class Group
     public function setSubjectOfIntance(?SubjectOfInstance $subjectOfIntance): static
     {
         $this->subjectOfIntance = $subjectOfIntance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setRelatedGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getRelatedGroup() === $this) {
+                $note->setRelatedGroup(null);
+            }
+        }
 
         return $this;
     }

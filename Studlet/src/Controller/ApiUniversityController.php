@@ -110,4 +110,37 @@ final class ApiUniversityController extends AbstractController
             'name' => $subject->getName()
         ], Response::HTTP_CREATED);
     }
+
+    #[Route('/api/universities', name: 'get_all_universities', methods: ['GET'])]
+    public function getAllUniversities(UniversityRepository $universityRepository): JsonResponse
+    {
+        $universities = $universityRepository->findAll();
+
+        $result = [];
+
+        foreach ($universities as $university) {
+            $fields = [];
+            foreach ($university->getFieldOfStudies() as $field) {
+                $fields[] = [
+                    'id' => $field->getId(),
+                    'name' => $field->getName(),
+                ];
+            }
+
+            $rector = $university->getRector();
+            $result[] = [
+                'id' => $university->getId(),
+                'name' => $university->getName(),
+                'address' => $university->getAddress(),
+                'rector' => $rector ? [
+                    'id' => $rector->getId(),
+                    'firstname' => $rector->getFirstName(),
+                    'lastname' => $rector->getLastName(),
+                ] : null,
+                'fieldOfStudies' => $fields,
+            ];
+        }
+
+        return $this->json($result);
+    }
 }
