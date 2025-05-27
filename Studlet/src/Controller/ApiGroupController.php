@@ -297,4 +297,47 @@ final class ApiGroupController extends AbstractController{
             'noteId' => $note->getId(),
         ], 201);
     }
+
+    #[Route('/api/field/{id}/students', name: 'students_by_field', methods: ['GET'])]
+    public function studentsByField(int $id, UserRepository $repo): JsonResponse
+    {
+        $students = $repo->findBy(['fieldOfStudy' => $id]);
+
+        $data = array_map(fn($student) => [
+            'id' => $student->getId(),
+            'firstname' => $student->getFirstName(),
+            'lastname' => $student->getLastName(),
+            'email' => $student->getEmail(),
+        ], $students);
+
+        return $this->json($data);
+    }
+
+    #[Route('/api/field/{fieldId}/group/{groupId}/students', name: 'students_by_field_not_in_group', methods: ['GET'])]
+    public function studentsByFieldNotInGroup(int $fieldId, int $groupId, UserRepository $userRepo, GroupRepository $groupRepo): JsonResponse
+    {
+        $group = $groupRepo->find($groupId);
+        if (!$group) {
+            return $this->json(['error' => 'Grupa nie istnieje'], 404);
+        }
+
+        $studentsByField = $userRepo->findBy(['fieldOfStudy' => $fieldId]);
+        $studentsInGroup = $group->getStudents();
+        $studentsInGroupIds = array_map(fn($student) => $student->getId(), $studentsInGroup->toArray());
+        $filteredStudents = array_filter($studentsByField, function($student) use ($studentsInGroupIds) {
+            $roles = $student->getRoles();
+            $isProcessor = in_array('ROLE_PROFESSOR', $roles);
+
+            return !in_array($student->getId(), $studentsInGroupIds) && !$isProcessor;
+        });
+        $filteredStudents = array_values($filteredStudents);
+        $data = array_map(fn($student) => [
+            'id' => $student->getId(),
+            'firstname' => $student->getFirstName(),
+            'lastname' => $student->getLastName(),
+            'email' => $student->getEmail(),
+        ], $filteredStudents);
+
+        return $this->json($data);
+    }
 }

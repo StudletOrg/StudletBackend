@@ -72,6 +72,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'author', orphanRemoval: true)]
     private Collection $notes;
 
+    #[ORM\ManyToOne(inversedBy: 'students')]
+    private ?FieldOfStudy $fieldOfStudy = null;
+
     public function __construct()
     {
         $this->subjectOfInstances = new ArrayCollection();
@@ -336,6 +339,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $note->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFieldOfStudy(): ?FieldOfStudy
+    {
+        return $this->fieldOfStudy;
+    }
+
+    public function setFieldOfStudy(?FieldOfStudy $fieldOfStudy): static
+    {
+        $this->fieldOfStudy = $fieldOfStudy;
 
         return $this;
     }

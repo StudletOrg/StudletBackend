@@ -28,9 +28,16 @@ class FieldOfStudy
     #[ORM\OneToMany(targetEntity: Subject::class, mappedBy: 'fieldOfStudy')]
     private Collection $subjects;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'fieldOfStudy')]
+    private Collection $students;
+
     public function __construct()
     {
         $this->subjects = new ArrayCollection();
+        $this->students = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,6 +93,36 @@ class FieldOfStudy
             // set the owning side to null (unless already changed)
             if ($subject->getFieldOfStudy() === $this) {
                 $subject->setFieldOfStudy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getStudents(): Collection
+    {
+        return $this->students;
+    }
+
+    public function addStudent(User $student): static
+    {
+        if (!$this->students->contains($student)) {
+            $this->students->add($student);
+            $student->setFieldOfStudy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudent(User $student): static
+    {
+        if ($this->students->removeElement($student)) {
+            // set the owning side to null (unless already changed)
+            if ($student->getFieldOfStudy() === $this) {
+                $student->setFieldOfStudy(null);
             }
         }
 
