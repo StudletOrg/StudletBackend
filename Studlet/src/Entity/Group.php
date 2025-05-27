@@ -5,17 +5,20 @@ namespace App\Entity;
 use App\Repository\GroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: '`group`')]
 class Group
 {
+    #[Groups(['group_list'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['group_list'])]
     #[ORM\Column]
     private ?int $numer = null;
 
@@ -35,6 +38,7 @@ class Group
     #[ORM\OneToMany(targetEntity: Grade::class, mappedBy: 'groupp', orphanRemoval: true)]
     private Collection $grades;
 
+    #[Groups(['group_list'])]
     #[ORM\ManyToOne(inversedBy: 'groupss')]
     #[ORM\JoinColumn(nullable: false)]
     private ?SubjectOfInstance $subjectOfIntance = null;

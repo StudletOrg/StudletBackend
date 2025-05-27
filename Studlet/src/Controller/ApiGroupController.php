@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Group;
+use App\Entity\Note;
 use App\Repository\GroupRepository;
 use App\Repository\UserRepository;
 use App\Repository\SubjectOfInstanceRepository;
@@ -33,6 +34,42 @@ final class ApiGroupController extends AbstractController{
                 'email' => $student->getEmail(),
             ];
         });
+        return $this->json($students);
+    }
+
+    #[Route('/api/groups/{id}/studentsWithGrades', name: 'group_students_with_grades', methods: ['GET'])]
+    public function getGroupStudentsWithGrades(int $id, GroupRepository $groupRepository): JsonResponse
+    {
+        $group = $groupRepository->find($id);
+
+        if (!$group) {
+            return $this->json(['error' => 'Group not found'], 404);
+        }
+
+        $students = $group->getStudents()->map(function ($student) use ($id) {
+            return [
+                'id' => $student->getId(),
+                'firstName' => $student->getFirstName(),
+                'lastName' => $student->getLastName(),
+                'email' => $student->getEmail(),
+                'grades' => array_values(
+                    $student->getGrades()
+                        ->filter(fn($grade) => $grade->getGroupp()?->getId() === $id)
+                        ->map(function ($grade) {
+                            return [
+                                'id' => $grade->getId(),
+                                'value' => $grade->getValue(),
+                                'subject' => $grade->getGroupp()
+                                    ?->getSubjectOfIntance()
+                                    ?->getSubject()
+                                    ?->getName(),
+                            ];
+                        })
+                        ->toArray()
+                ),
+            ];
+        })->toArray();
+
         return $this->json($students);
     }
 
@@ -228,14 +265,14 @@ final class ApiGroupController extends AbstractController{
     }
 
     #[Route('/api/notes/new', name: 'create_note', methods: ['POST'])]
-    public function createNote(Request $request, GroupRepository $groupRepository, EntityManagerInterface $entityManager, Security $security): JsonResponse {
+    public function createNote(Request $request, GroupRepository $groupRepository, EntityManagerInterface $entityManager): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         if (!isset($data['title'], $data['groupId'])) {
             return $this->json(['error' => 'Missing required fields'], 400);
         }
 
-        $user = $security->getUser();
+        $user = $this->getUser();
         if (!$user) {
             return $this->json(['error' => 'Unauthorized'], 401);
         }

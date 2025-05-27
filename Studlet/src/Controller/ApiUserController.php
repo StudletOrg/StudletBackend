@@ -86,8 +86,45 @@ final class ApiUserController extends AbstractController
             'lastname' => $user->getLastName(),
             'dateofbirth' => $user->getDateOfBirth(),
             'email' => $user->getEmail(),
-            'roles' => $user->getRoles()
+            'roles' => $user->getRoles(),
         ];
         return $this->json($data);
+    }
+    #[Route('/api/user/my_groups', name: 'api_my_groups', methods: ['GET'])]
+    public function getMyGroups(UserRepository $userRepository): JsonResponse {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw new AccessDeniedHttpException('Brak dostępu - użytkownik niezalogowany.');
+        }
+
+        $groups = $user->getGroupsOfProfessor();
+
+        foreach ($groups as $g) {
+            $data[] = [
+                'id' => $g->getId(),
+                'numer' => $g->getNumer(),
+                'name' => $g->getSubjectOfIntance()->getSubject()->getName(),
+            ];
+        }
+        return $this->json($data);
+    }
+
+    #[Route('/api/allstudents', name: 'api_all_students', methods: ['GET'])]
+    public function getAllStudents(UserRepository $userRepository): JsonResponse
+    {
+        $allUsers = $userRepository->findAll();
+
+        $students = [];
+
+        foreach ($allUsers as $user) {
+            $students[] = [
+                'id' => $user->getId(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
+                'email' => $user->getEmail(),
+            ];
+        }
+        return $this->json($students);
     }
 }

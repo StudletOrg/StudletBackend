@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -37,12 +38,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, SubjectOfInstance>
      */
-    #[ORM\OneToMany(targetEntity: SubjectOfInstance::class, mappedBy: 'Coordinator')]
+    #[ORM\OneToMany(targetEntity: SubjectOfInstance::class, mappedBy: 'coordinator')]
     private Collection $subjectOfInstances;
 
     /**
      * @var Collection<int, Group>
      */
+    #[Groups(['user_groups'])]
     #[ORM\OneToMany(targetEntity: Group::class, mappedBy: 'professor')]
     private Collection $groupsOfProfessor;
 
