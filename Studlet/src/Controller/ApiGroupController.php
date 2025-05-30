@@ -18,6 +18,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+
+/**
+ * Kontroler zarządzający grupami studentów.
+ *
+ */
 final class ApiGroupController extends AbstractController{
     #[Route('/api/groups/{id}/students', name: 'group_students', methods: ['GET'])]
     public function getGroupStudents(int $id, GroupRepository $groupRepository): JsonResponse

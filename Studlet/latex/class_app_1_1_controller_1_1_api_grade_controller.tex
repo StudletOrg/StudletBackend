@@ -1,0 +1,67 @@
+\doxysection{App\textbackslash{}Controller\textbackslash{}Api\+Grade\+Controller Class Reference}
+\hypertarget{class_app_1_1_controller_1_1_api_grade_controller}{}\label{class_app_1_1_controller_1_1_api_grade_controller}\index{App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}}
+Inheritance diagram for App\textbackslash{}Controller\textbackslash{}Api\+Grade\+Controller\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_app_1_1_controller_1_1_api_grade_controller}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_grade_controller_aa089d2798a61f21f0b718afac6a93c76}{get\+Grades\+By\+Student}} (int \$id, \mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}} \$grade\+Repository, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$user\+Repository)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_grade_controller_a8ad54ef7d3c64510124e7e2ea16cd52c}{get\+My\+Grades}} (\mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}} \$grade\+Repository, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$user\+Repository)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_grade_controller_ac8c362b636a6755aa4072d5744028167}{get\+My\+Subjects}} (\mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}} \$grade\+Repository, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$user\+Repository)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_grade_controller_aee5039c139c4374c828788c781d5d20f}{get\+Grades\+By\+Student\+And\+Subject}} (int \$id, int \$subject\+\_\+id, \mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}} \$grade\+Repository, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$user\+Repository, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repository)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_grade_controller_ac6cd2a21d52e5f053d1e8a2ff7ee971d}{add\+Grade}} (Request \$request, Entity\+Manager\+Interface \$em, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$user\+Repo, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repo)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_grade_controller_a4c8e11406b7a002f19a5708c8f0da89f}{delete\+Grade}} (int \$id, \mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}} \$grade\+Repository, Entity\+Manager\+Interface \$em)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_app_1_1_controller_1_1_api_grade_controller_ac6cd2a21d52e5f053d1e8a2ff7ee971d}\index{App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}!addGrade@{addGrade}}
+\index{addGrade@{addGrade}!App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}}
+\doxysubsubsection{\texorpdfstring{addGrade()}{addGrade()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_grade_controller_ac6cd2a21d52e5f053d1e8a2ff7ee971d} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Grade\+Controller\+::add\+Grade (\begin{DoxyParamCaption}\item[{Request}]{\$request}{, }\item[{Entity\+Manager\+Interface}]{\$em}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$user\+Repo}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repo}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_grade_controller_a4c8e11406b7a002f19a5708c8f0da89f}\index{App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}!deleteGrade@{deleteGrade}}
+\index{deleteGrade@{deleteGrade}!App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}}
+\doxysubsubsection{\texorpdfstring{deleteGrade()}{deleteGrade()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_grade_controller_a4c8e11406b7a002f19a5708c8f0da89f} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Grade\+Controller\+::delete\+Grade (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}}}]{\$grade\+Repository}{, }\item[{Entity\+Manager\+Interface}]{\$em}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_grade_controller_aa089d2798a61f21f0b718afac6a93c76}\index{App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}!getGradesByStudent@{getGradesByStudent}}
+\index{getGradesByStudent@{getGradesByStudent}!App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}}
+\doxysubsubsection{\texorpdfstring{getGradesByStudent()}{getGradesByStudent()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_grade_controller_aa089d2798a61f21f0b718afac6a93c76} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Grade\+Controller\+::get\+Grades\+By\+Student (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}}}]{\$grade\+Repository}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$user\+Repository}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_grade_controller_aee5039c139c4374c828788c781d5d20f}\index{App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}!getGradesByStudentAndSubject@{getGradesByStudentAndSubject}}
+\index{getGradesByStudentAndSubject@{getGradesByStudentAndSubject}!App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}}
+\doxysubsubsection{\texorpdfstring{getGradesByStudentAndSubject()}{getGradesByStudentAndSubject()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_grade_controller_aee5039c139c4374c828788c781d5d20f} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Grade\+Controller\+::get\+Grades\+By\+Student\+And\+Subject (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{int}]{\$subject\+\_\+id}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}}}]{\$grade\+Repository}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$user\+Repository}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repository}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_grade_controller_a8ad54ef7d3c64510124e7e2ea16cd52c}\index{App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}!getMyGrades@{getMyGrades}}
+\index{getMyGrades@{getMyGrades}!App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}}
+\doxysubsubsection{\texorpdfstring{getMyGrades()}{getMyGrades()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_grade_controller_a8ad54ef7d3c64510124e7e2ea16cd52c} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Grade\+Controller\+::get\+My\+Grades (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}}}]{\$grade\+Repository}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$user\+Repository}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_grade_controller_ac8c362b636a6755aa4072d5744028167}\index{App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}!getMySubjects@{getMySubjects}}
+\index{getMySubjects@{getMySubjects}!App\textbackslash{}Controller\textbackslash{}ApiGradeController@{App\textbackslash{}Controller\textbackslash{}ApiGradeController}}
+\doxysubsubsection{\texorpdfstring{getMySubjects()}{getMySubjects()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_grade_controller_ac8c362b636a6755aa4072d5744028167} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Grade\+Controller\+::get\+My\+Subjects (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_grade_repository}{Grade\+Repository}}}]{\$grade\+Repository}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$user\+Repository}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Controller/\mbox{\hyperlink{_api_grade_controller_8php}{Api\+Grade\+Controller.\+php}}\end{DoxyCompactItemize}

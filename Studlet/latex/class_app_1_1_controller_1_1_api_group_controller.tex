@@ -1,0 +1,107 @@
+\doxysection{App\textbackslash{}Controller\textbackslash{}Api\+Group\+Controller Class Reference}
+\hypertarget{class_app_1_1_controller_1_1_api_group_controller}{}\label{class_app_1_1_controller_1_1_api_group_controller}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+
+
+Kontroler zarządzający grupami studentów.  
+
+
+Inheritance diagram for App\textbackslash{}Controller\textbackslash{}Api\+Group\+Controller\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_app_1_1_controller_1_1_api_group_controller}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_a45bdd874a1a5b76c6c461a5799209df8}{get\+Group\+Students}} (int \$id, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repository)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_a768d6b5419acd44550b1ecd134916d66}{get\+Group\+Students\+With\+Grades}} (int \$id, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repository, \mbox{\hyperlink{class_app_1_1_repository_1_1_attendance_repository}{Attendance\+Repository}} \$attendance\+Repository)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_a4eda9c44952aa12fb2edd02806668a8d}{get\+Student\+Groups\+Api}} (\mbox{\hyperlink{class_app_1_1_repository_1_1_attendance_repository}{Attendance\+Repository}} \$attendance\+Repository)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_a28426766a9c6edc010a26814451d2619}{get\+Group\+Details}} (int \$id, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repository)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_a16bc7e353d77319857c219b357114572}{create\+Group}} (Request \$request, Entity\+Manager\+Interface \$em, \mbox{\hyperlink{class_app_1_1_repository_1_1_subject_of_instance_repository}{Subject\+Of\+Instance\+Repository}} \$subject\+Repo, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$student\+Repo)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_ad1df0fadb2115a66eca213eedb71c5cf}{add\+Students\+To\+Group}} (int \$id, Request \$request, Entity\+Manager\+Interface \$em, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repository, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$student\+Repo)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_a5b8269281745deb63dd1090f146d9e90}{remove\+Student\+From\+Group}} (int \$group\+Id, int \$student\+Id, Entity\+Manager\+Interface \$em, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repository, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$student\+Repo)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_a8f73e7d8ce9a3d4d920add7d00de639c}{create\+Note}} (Request \$request, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repository, Entity\+Manager\+Interface \$entity\+Manager)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_ad1236ea64ccbcd82afa53dbf9a02c603}{students\+By\+Field}} (int \$id, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$repo)
+\item 
+\mbox{\hyperlink{class_app_1_1_controller_1_1_api_group_controller_a2a9135941748b02e3a9e712c78384618}{students\+By\+Field\+Not\+In\+Group}} (int \$field\+Id, int \$group\+Id, \mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}} \$user\+Repo, \mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}} \$group\+Repo)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Kontroler zarządzający grupami studentów. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_ad1df0fadb2115a66eca213eedb71c5cf}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!addStudentsToGroup@{addStudentsToGroup}}
+\index{addStudentsToGroup@{addStudentsToGroup}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{addStudentsToGroup()}{addStudentsToGroup()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_ad1df0fadb2115a66eca213eedb71c5cf} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::add\+Students\+To\+Group (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{Request}]{\$request}{, }\item[{Entity\+Manager\+Interface}]{\$em}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repository}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$student\+Repo}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_a16bc7e353d77319857c219b357114572}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!createGroup@{createGroup}}
+\index{createGroup@{createGroup}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{createGroup()}{createGroup()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_a16bc7e353d77319857c219b357114572} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::create\+Group (\begin{DoxyParamCaption}\item[{Request}]{\$request}{, }\item[{Entity\+Manager\+Interface}]{\$em}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_subject_of_instance_repository}{Subject\+Of\+Instance\+Repository}}}]{\$subject\+Repo}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$student\+Repo}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_a8f73e7d8ce9a3d4d920add7d00de639c}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!createNote@{createNote}}
+\index{createNote@{createNote}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{createNote()}{createNote()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_a8f73e7d8ce9a3d4d920add7d00de639c} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::create\+Note (\begin{DoxyParamCaption}\item[{Request}]{\$request}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repository}{, }\item[{Entity\+Manager\+Interface}]{\$entity\+Manager}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_a28426766a9c6edc010a26814451d2619}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!getGroupDetails@{getGroupDetails}}
+\index{getGroupDetails@{getGroupDetails}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{getGroupDetails()}{getGroupDetails()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_a28426766a9c6edc010a26814451d2619} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::get\+Group\+Details (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repository}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_a45bdd874a1a5b76c6c461a5799209df8}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!getGroupStudents@{getGroupStudents}}
+\index{getGroupStudents@{getGroupStudents}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{getGroupStudents()}{getGroupStudents()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_a45bdd874a1a5b76c6c461a5799209df8} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::get\+Group\+Students (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repository}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_a768d6b5419acd44550b1ecd134916d66}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!getGroupStudentsWithGrades@{getGroupStudentsWithGrades}}
+\index{getGroupStudentsWithGrades@{getGroupStudentsWithGrades}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{getGroupStudentsWithGrades()}{getGroupStudentsWithGrades()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_a768d6b5419acd44550b1ecd134916d66} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::get\+Group\+Students\+With\+Grades (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repository}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_attendance_repository}{Attendance\+Repository}}}]{\$attendance\+Repository}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_a4eda9c44952aa12fb2edd02806668a8d}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!getStudentGroupsApi@{getStudentGroupsApi}}
+\index{getStudentGroupsApi@{getStudentGroupsApi}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{getStudentGroupsApi()}{getStudentGroupsApi()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_a4eda9c44952aa12fb2edd02806668a8d} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::get\+Student\+Groups\+Api (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_attendance_repository}{Attendance\+Repository}}}]{\$attendance\+Repository}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_a5b8269281745deb63dd1090f146d9e90}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!removeStudentFromGroup@{removeStudentFromGroup}}
+\index{removeStudentFromGroup@{removeStudentFromGroup}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{removeStudentFromGroup()}{removeStudentFromGroup()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_a5b8269281745deb63dd1090f146d9e90} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::remove\+Student\+From\+Group (\begin{DoxyParamCaption}\item[{int}]{\$group\+Id}{, }\item[{int}]{\$student\+Id}{, }\item[{Entity\+Manager\+Interface}]{\$em}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repository}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$student\+Repo}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_ad1236ea64ccbcd82afa53dbf9a02c603}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!studentsByField@{studentsByField}}
+\index{studentsByField@{studentsByField}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{studentsByField()}{studentsByField()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_ad1236ea64ccbcd82afa53dbf9a02c603} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::students\+By\+Field (\begin{DoxyParamCaption}\item[{int}]{\$id}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$repo}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_app_1_1_controller_1_1_api_group_controller_a2a9135941748b02e3a9e712c78384618}\index{App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}!studentsByFieldNotInGroup@{studentsByFieldNotInGroup}}
+\index{studentsByFieldNotInGroup@{studentsByFieldNotInGroup}!App\textbackslash{}Controller\textbackslash{}ApiGroupController@{App\textbackslash{}Controller\textbackslash{}ApiGroupController}}
+\doxysubsubsection{\texorpdfstring{studentsByFieldNotInGroup()}{studentsByFieldNotInGroup()}}
+{\footnotesize\ttfamily \label{class_app_1_1_controller_1_1_api_group_controller_a2a9135941748b02e3a9e712c78384618} 
+App\textbackslash{}\+Controller\textbackslash{}\+Api\+Group\+Controller\+::students\+By\+Field\+Not\+In\+Group (\begin{DoxyParamCaption}\item[{int}]{\$field\+Id}{, }\item[{int}]{\$group\+Id}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_user_repository}{User\+Repository}}}]{\$user\+Repo}{, }\item[{\mbox{\hyperlink{class_app_1_1_repository_1_1_group_repository}{Group\+Repository}}}]{\$group\+Repo}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Controller/\mbox{\hyperlink{_api_group_controller_8php}{Api\+Group\+Controller.\+php}}\end{DoxyCompactItemize}
