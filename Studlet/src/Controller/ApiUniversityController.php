@@ -33,7 +33,7 @@ final class ApiUniversityController extends AbstractController
                 'firstname' => $university->getRector()->getFirstName(),
                 'lastname' => $university->getRector()->getLastName(),
             ] : null,
-            'fieldOfStudies' => [],
+            'fieldOfStudy' => [],
         ];
 
         foreach ($university->getFieldOfStudies() as $field) {
@@ -138,7 +138,7 @@ final class ApiUniversityController extends AbstractController
                     'firstname' => $rector->getFirstName(),
                     'lastname' => $rector->getLastName(),
                 ] : null,
-                'fieldOfStudies' => $fields,
+                'fieldOfStudy' => $fields,
             ];
         }
 

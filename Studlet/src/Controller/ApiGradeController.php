@@ -170,4 +170,34 @@ final class ApiGradeController extends AbstractController
         ], 201);
     }
 
+    #[Route('/api/grade/{id}', name: 'api_grade_delete', methods: ['DELETE'])]
+    public function deleteGrade(int $id, GradeRepository $gradeRepository, EntityManagerInterface $em): JsonResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw new AccessDeniedHttpException('Brak dostępu – użytkownik niezalogowany.');
+        }
+
+        $grade = $gradeRepository->find($id);
+
+        if (!$grade) {
+            throw new NotFoundHttpException('Ocena nie została znaleziona.');
+        }
+
+        $group = $grade->getGroupp();
+        if ($group->getProfessor()?->getId() !== $user->getId()) {
+            throw new AccessDeniedHttpException('Nie jesteś profesorem tej grupy.');
+        }
+
+        $em->remove($grade);
+        $em->flush();
+
+        return $this->json([
+            'success' => true,
+            'message' => 'Ocena została usunięta.'
+        ]);
+    }
+
+
 }
