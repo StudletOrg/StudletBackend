@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Group;
 use App\Entity\Note;
+use App\Entity\Attendance;
 use App\Repository\GroupRepository;
 use App\Repository\UserRepository;
+use App\Repository\AttendanceRepository;
 use App\Repository\SubjectOfInstanceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,15 +40,19 @@ final class ApiGroupController extends AbstractController{
     }
 
     #[Route('/api/groups/{id}/studentsWithGrades', name: 'group_students_with_grades', methods: ['GET'])]
-    public function getGroupStudentsWithGrades(int $id, GroupRepository $groupRepository): JsonResponse
-    {
+    public function getGroupStudentsWithGrades(int $id, GroupRepository $groupRepository, AttendanceRepository $attendanceRepository): JsonResponse {
         $group = $groupRepository->find($id);
 
         if (!$group) {
             return $this->json(['error' => 'Group not found'], 404);
         }
 
-        $students = $group->getStudents()->map(function ($student) use ($id) {
+        $students = $group->getStudents()->map(function ($student) use ($id, $attendanceRepository, $group) {
+            $attendance = $attendanceRepository->findOneBy([
+                'user' => $student,
+                'groupp' => $group,
+            ]);
+
             return [
                 'id' => $student->getId(),
                 'firstName' => $student->getFirstName(),
@@ -67,14 +73,19 @@ final class ApiGroupController extends AbstractController{
                         })
                         ->toArray()
                 ),
+                'attendance' => $attendance ? [
+                    'value' => $attendance->getValue(),
+                    'maksvalue' => $attendance->getMaksvalue(),
+                ] : null,
             ];
         })->toArray();
 
         return $this->json($students);
     }
 
+
     #[Route('/api/groups/student-groups', name: 'student_groups_api', methods: ['GET'])]
-    public function getStudentGroupsApi(): JsonResponse
+    public function getStudentGroupsApi(AttendanceRepository $attendanceRepository): JsonResponse
     {
         $user = $this->getUser();
 
@@ -91,6 +102,16 @@ final class ApiGroupController extends AbstractController{
             $subjectName = $subjectInstance?->getSubject()?->getName();
             $professor = $group->getProfessor();
 
+            $attendance = $attendanceRepository->findOneBy([
+                'user' => $user,
+                'groupp' => $group,
+            ]);
+
+            $attendanceData = $attendance ? [
+                'value' => $attendance->getValue(),
+                'maksvalue' => $attendance->getMaksvalue(),
+            ] : null;
+
             $result[] = [
                 'groupNumber' => $group->getNumer(),
                 'professor' => [
@@ -100,6 +121,7 @@ final class ApiGroupController extends AbstractController{
                 ],
                 'studentCount' => $group->getStudents()->count(),
                 'subject' => $subjectName ?? 'Brak powiązanego przedmiotu',
+                'attendance' => $attendanceData,
             ];
         }
         return $this->json($result);
@@ -179,6 +201,20 @@ final class ApiGroupController extends AbstractController{
                 $student = $studentRepo->find($studentId);
                 if ($student) {
                     $group->addStudent($student);
+
+                    $existingAttendance = $em->getRepository(Attendance::class)->findOneBy([
+                        'user' => $student,
+                        'groupp' => $group,
+                    ]);
+
+                    if (!$existingAttendance) {
+                        $attendance = new Attendance();
+                        $attendance->setUser($student);
+                        $attendance->setGroupp($group);
+                        $attendance->setMaksvalue(30);
+                        $attendance->setValue(0);
+                        $em->persist($attendance);
+                    }
                 }
             }
         }
@@ -218,6 +254,20 @@ final class ApiGroupController extends AbstractController{
             $student = $studentRepo->find($studentId);
             if ($student) {
                 $group->addStudent($student);
+
+                $existingAttendance = $em->getRepository(Attendance::class)->findOneBy([
+                    'user' => $student,
+                    'groupp' => $group,
+                ]);
+
+                if (!$existingAttendance) {
+                    $attendance = new Attendance();
+                    $attendance->setUser($student);
+                    $attendance->setGroupp($group);
+                    $attendance->setMaksvalue(30);
+                    $attendance->setValue(0);
+                    $em->persist($attendance);
+                }
             }
         }
 

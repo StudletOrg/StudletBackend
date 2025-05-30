@@ -178,6 +178,40 @@ final class ApiUniversityController extends AbstractController
         return $this->json($data);
     }
 
+    #[Route('/api/my-subject-of-instances', name: 'api_my_subject_of_instances', methods: ['GET'])]
+    public function getAllMy(SubjectOfInstanceRepository $repository): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            throw new AccessDeniedHttpException('Brak dostępu - użytkownik niezalogowany.');
+        }
+        $instances = $repository->findAll();
+
+        $data = [];
+
+        foreach ($instances as $instance) {
+            $subject = $instance->getSubject();
+            $coordinator = $instance->getCoordinator();
+            if($coordinator->getId() == $user->getId()){
+                $data[] = [
+                    'id' => $instance->getId(),
+                    'subject' => [
+                        'id' => $subject?->getId(),
+                        'name' => $subject?->getName(),
+                    ],
+                    'coordinator' => [
+                        'id' => $coordinator?->getId(),
+                        'firstName' => $coordinator?->getFirstName(),
+                        'lastName' => $coordinator?->getLastName(),
+                        'email' => $coordinator?->getEmail(),
+                    ]
+                ];
+            }
+        }
+
+        return $this->json($data);
+    }
+
     #[Route('/api/field-of-study/{id}', name: 'get_field_of_study', methods: ['GET'])]
     public function getFieldOfStudy(int $id, EntityManagerInterface $em): JsonResponse
     {
