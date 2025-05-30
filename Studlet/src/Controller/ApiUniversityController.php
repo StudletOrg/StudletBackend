@@ -11,6 +11,7 @@ use App\Entity\University;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Subject;
 use App\Repository\FieldOfStudyRepository;
+use App\Repository\SubjectOfInstanceRepository;
 
 final class ApiUniversityController extends AbstractController
 {
@@ -142,5 +143,34 @@ final class ApiUniversityController extends AbstractController
         }
 
         return $this->json($result);
+    }
+
+    #[Route('/api/subject-of-instances', name: 'api_subject_of_instances', methods: ['GET'])]
+    public function getAll(SubjectOfInstanceRepository $repository): JsonResponse
+    {
+        $instances = $repository->findAll();
+
+        $data = [];
+
+        foreach ($instances as $instance) {
+            $subject = $instance->getSubject();
+            $coordinator = $instance->getCoordinator();
+
+            $data[] = [
+                'id' => $instance->getId(),
+                'subject' => [
+                    'id' => $subject?->getId(),
+                    'name' => $subject?->getName(),
+                ],
+                'coordinator' => [
+                    'id' => $coordinator?->getId(),
+                    'firstName' => $coordinator?->getFirstName(),
+                    'lastName' => $coordinator?->getLastName(),
+                    'email' => $coordinator?->getEmail(),
+                ]
+            ];
+        }
+
+        return $this->json($data);
     }
 }
