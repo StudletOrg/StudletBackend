@@ -10,8 +10,12 @@ use App\Repository\UniversityRepository;
 use App\Entity\University;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Subject;
+use App\Entity\FieldOfStudy;
+use App\Entity\SubjectOfInstance;
 use App\Repository\FieldOfStudyRepository;
 use App\Repository\SubjectOfInstanceRepository;
+use App\Repository\GroupRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class ApiUniversityController extends AbstractController
 {
@@ -172,5 +176,90 @@ final class ApiUniversityController extends AbstractController
         }
 
         return $this->json($data);
+    }
+
+    #[Route('/api/field-of-study/{id}', name: 'get_field_of_study', methods: ['GET'])]
+    public function getFieldOfStudy(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $fieldOfStudy = $em->getRepository(FieldOfStudy::class)->find($id);
+
+        if (!$fieldOfStudy) {
+            return $this->json(['error' => 'Field of study not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $subjects = $fieldOfStudy->getSubjects();
+
+        $subjectData = [];
+
+        foreach ($subjects as $subject) {
+
+            $subjectData[] = [
+                'id' => $subject->getId(),
+                'name' => $subject->getName(),
+            ];
+        }
+
+        $responseData = [
+            'id' => $fieldOfStudy->getId(),
+            'name' => $fieldOfStudy->getName(),
+            'subjects' => $subjectData,
+        ];
+
+        return $this->json($responseData, Response::HTTP_OK);
+    }
+
+    #[Route('/api/subject-details/{id}', name: 'get_subject_details', methods: ['GET'])]
+    public function getSubjectDetails(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $subject = $em->getRepository(Subject::class)->find($id);
+
+        if (!$subject) {
+            return $this->json(['error' => 'Subject not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $subjectOfInstance = $em->getRepository(SubjectOfInstance::class)->findOneBy(['subject' => $subject]);
+
+        $groupsData = [];
+        $subjectOfInstanceData = null;
+
+        if ($subjectOfInstance) {
+            $coordinator = $subjectOfInstance->getCoordinator();
+
+            $subjectOfInstanceData = [
+                'id' => $subjectOfInstance->getId(),
+                'coordinator' => $coordinator ? [
+                    'id' => $coordinator->getId(),
+                    'firstName' => $coordinator->getFirstName(),
+                    'lastName' => $coordinator->getLastName(),
+                    'email' => $coordinator->getEmail(),
+                ] : null,
+            ];
+
+            foreach ($subjectOfInstance->getGroupss() as $group) {
+                $professor = $group->getProfessor();
+
+                $groupsData[] = [
+                    'id' => $group->getId(),
+                    'number' => $group->getNumer(),
+                    'professor' => $professor ? [
+                        'id' => $professor->getId(),
+                        'firstName' => $professor->getFirstName(),
+                        'lastName' => $professor->getLastName(),
+                        'email' => $professor->getEmail(),
+                    ] : null,
+                ];
+            }
+        }
+
+        $responseData = [
+            'subject' => [
+                'id' => $subject->getId(),
+                'name' => $subject->getName(),
+            ],
+            'subjectOfInstance' => $subjectOfInstanceData,
+            'groups' => $groupsData,
+        ];
+
+        return $this->json($responseData, Response::HTTP_OK);
     }
 }
